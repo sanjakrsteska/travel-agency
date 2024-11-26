@@ -1,0 +1,39 @@
+﻿@model IEnumerable<TravelAgencyApplication.Domain.Model.Itinerary>
+@{
+    ViewData["Title"] = "Itineraries";
+}
+
+<h2 class="mt-4 mb-3">@ViewData["Title"]</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Details</th>
+            <th>Price</th>
+            <th>Date</th>
+            <th>Destination</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var itinerary in Model)
+        {
+            <tr>
+                <td>@itinerary.Title</td>
+                <td>@itinerary.Details</td>
+                <td>@itinerary.Price</td>
+                <td>@itinerary.Date.ToShortDateString()</td>
+                <td>@itinerary.Destination?.ToString()</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@itinerary.Id" class="btn btn-info">Details</a>
+                    <a asp-action="Edit" asp-route-id="@itinerary.Id" class="btn btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@itinerary.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-primary">Create New Itinerary</a>
+<a asp-controller="Admin" asp-action="Index" class="btn btn-secondary">Back to Admin Panel</a>

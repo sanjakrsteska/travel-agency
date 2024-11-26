@@ -1,0 +1,99 @@
+﻿@model TravelAgencyApplication.Domain.Identity.TAUser
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    <h4>@Model.FirstName @Model.LastName</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Username</dt>
+        <dd class="col-sm-10">@Model.UserName</dd>
+
+        <dt class="col-sm-2">First Name</dt>
+        <dd class="col-sm-10">@Model.FirstName</dd>
+
+        <dt class="col-sm-2">Last Name</dt>
+        <dd class="col-sm-10">@Model.LastName</dd>
+
+        <dt class="col-sm-2">Phone Number</dt>
+        <dd class="col-sm-10">@Model.PhoneNumber</dd>
+
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.Email</dd>
+
+        <dt class="col-sm-2">User Role</dt>
+        <dd class="col-sm-10">@Model.UserRole</dd>
+    </dl>
+</div>
+
+@if (Model.Reservations?.Any(d => d.TravelPackage.ReturnDate.CompareTo(DateTime.Now) > 0) == true)
+{
+    <div class="mt-4">
+        <h4>Future Reservations</h4>
+        <hr />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var reservation in Model.Reservations.Where(d => d.TravelPackage.ReturnDate.CompareTo(DateTime.Now) > 0))
+                {
+                    <tr>
+                        <td>@reservation.Date.ToShortDateString()</td>
+                        <td>@reservation.TotalPrice.ToString("C")</td>
+                        <td>
+                            @if (reservation.HasPaid)
+                            {
+                                <span class="text-success">Paid</span>
+                            }
+                            else
+                            {
+                                <span class="text-danger">Not Paid</span>
+                            }
+                        </td>
+                       
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@if (Model.Reservations?.Any(d => d.TravelPackage.ReturnDate.CompareTo(DateTime.Now) <= 0) == true)
+{
+    <div class="mt-4">
+        <h4>Past Reservations</h4>
+        <hr />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var reservation in Model.Reservations.Where(d => d.TravelPackage.ReturnDate.CompareTo(DateTime.Now) <= 0))
+                {
+                    <tr>
+                        <td>@reservation.Date.ToShortDateString()</td>
+                        <td>@reservation.TotalPrice.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

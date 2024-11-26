@@ -1,0 +1,40 @@
+﻿@model TravelAgencyApplication.Domain.DTO.AdminPageDTO
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div style="min-height: calc(80vh)">
+    <h2 class="mt-4 mb-3">@ViewData["Title"]</h2>
+
+    <label class="fs-5 mt-2">Select entity:</label>
+    <select id="admin-section-select" class="form-control" onchange="loadSection(this.value)">
+        <option value="Users">Users</option>
+        <option value="Cities">Cities</option>
+        <option value="Countries">Countries</option>
+        <option value="DepartureLocations">Departure Locations</option>
+        <option value="Destinations">Destinations</option>
+        <option value="Tags">Tags</option>
+        <option value="Itineraries">Itineraries</option>
+        <option value="TravelPackages">Travel Packages</option>
+    </select>
+
+    <div id="section-content" class="mt-4">
+    </div>
+</div>
+
+<script>
+    function loadSection(section) {
+        $.ajax({
+            url: '/Admin/LoadSection',
+            type: 'GET',
+            data: { section: section },
+            success: function (result) {
+                $('#section-content').html(result);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        loadSection('Users')
+    });
+</script>

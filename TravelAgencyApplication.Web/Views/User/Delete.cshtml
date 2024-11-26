@@ -1,0 +1,52 @@
+﻿@model TravelAgencyApplication.Domain.Identity.TAUser
+@{
+    ViewData["Title"] = "Delete User";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h3>Are you sure you want to delete this user?</h3>
+<div>
+    <h4>@Model.FirstName @Model.LastName</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Phone Number</dt>
+        <dd class="col-sm-10">@Model.PhoneNumber</dd>
+    </dl>
+</div>
+
+@if (Model?.Reservations?.Count() > 0)
+{
+    <div>
+        <h4>Reservations</h4>
+        <hr />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Reservations.Count(); i++)
+                {
+                    var item = Model.Reservations.ElementAt(i);
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>@item.Date.ToShortDateString()</td>
+                        <td>@item.TotalPrice.ToString("C")</td>
+                        <td>@(item.HasPaid ? "Has Paid" : "Not Paid")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="submit" value="Delete" class="btn btn-danger" /> |
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

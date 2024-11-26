@@ -1,0 +1,31 @@
+﻿@model IEnumerable<TravelAgencyApplication.Domain.Model.Tag>
+
+@{
+    ViewData["Title"] = "Tags";
+}
+
+<h2 class="mt-4 mb-3">@ViewData["Title"]</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var tag in Model)
+        {
+            <tr>
+                <td>@tag.Name</td>
+                <td>
+                    <a href="@Url.Action("Edit", "Tag", new { id = tag.Id })" class="btn btn-warning">Edit</a>
+                    <a href="@Url.Action("Delete", "Tag", new { id = tag.Id })" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Create", "Tag")" class="btn btn-primary">Create New Tag</a>
+<a asp-controller="Admin" asp-action="Index" class="btn btn-secondary">Back to Admin Panel</a>
